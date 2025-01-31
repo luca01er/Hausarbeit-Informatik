@@ -10,6 +10,8 @@
 
 ## Die Entwicklung der INtegrierten Schaltkreise 
 
+## Zweite Version
+
 ## Zusammenfassung
 
 ## Literatur
