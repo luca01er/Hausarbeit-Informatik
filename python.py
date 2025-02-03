@@ -27,14 +27,26 @@ h = game.shape[0]
 
 result = cv.matchTemplate(screen, game, cv.TM_CCOEFF_NORMED)
 
-
 min_val, max_val, min_loc, max_loc = cv.minMaxLoc(result)
 
-cv.rectangle(screen, max_loc, (max_loc[0] + w, max_loc[1] + h), (0,255,255), 2)
+threshold = .65
 
-print(max_val, max_loc)
+yloc, xloc = np.where(result >= threshold)
 
-device.shell("input tap {int(max_loc)}")
+
+
+rectangles = []
+for (x, y) in zip(xloc, yloc):
+    rectangles.append([int(x), int(y), int(w), int(h)])
+
+rectangles, weights = cv.groupRectangles(rectangles, 1, 0.2)
+
+for (x, y, w, h) in (rectangles):
+    cv.rectangle(screen, (x, y), (x + w, y + h), (0,255,255), 2)
+
+print(len(rectangles))
+
+device.shell("input tap {} {}".format(x,y))
 
 
 cv.imshow("Result", screen)
